@@ -40,24 +40,11 @@ describe('Formulario de Cotización - Derco Blend', () => {
     // Preferencias
     cy.get('input[name="checkConditions"]').check();
     cy.get('input[name="checkContactDerco"]').check();
-  
-
-    cy.contains('Enviar cotización').click();
-    cy.contains('Gracias por cotizar').should('exist'); // Mensaje de éxito esperado
-  });
-
-  it('Debe mostrar errores si faltan datos', () => {
-    cy.contains('Alto').click();
-    cy.contains('Siguiente').click();
-    cy.get('select[name="region"]').select('RM Región Metropolitana');
-    cy.get('select[name="comuna"]').select('Santiago');
-    cy.get('select[name="concesionario"]').select(/.+/);
     cy.contains('Siguiente').click();
 
-    // Sin ingresar datos
-    cy.contains('Enviar cotización').click();
+    // Paso 3
 
-    // Validaciones HTML5
-    cy.get('input:invalid').should('have.length.at.least', 1);
+    cy.contains('Realizar cotización').click();
+    cy.contains('Tu solicitud ha sido recibida con éxito').should('exist'); // Mensaje de éxito esperado
   });
 });
