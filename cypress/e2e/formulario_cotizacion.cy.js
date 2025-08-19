@@ -27,11 +27,6 @@ cy.contains('button', 'Entendido').click();
 
   it('Debe permitir ingresar datos personales y enviar cotización', () => {
 
-    cy.get('select[name="region"]').select('RM Región Metropolitana');
-    cy.get('select[name="comuna"]').select('Santiago'); // Ajustar si necesario
-    cy.get('select[name="concesionario"]').select(/.+/);
-    cy.contains('Siguiente').click();
-
     // Datos personales
     cy.get('input[name="firstName"]').type('Carlos Alberto'); // Nombre
     cy.get('input[name="lastName"]').type('usuario@ejemplo.com');// Apellido
