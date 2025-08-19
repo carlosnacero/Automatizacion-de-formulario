@@ -2,7 +2,7 @@ import LoginPage from '../pages/LoginPage';
 
 describe('Formulario de Cotización - Derco Blend', () => {
   beforeEach(() => {
-    cy.visit('https://www.suzuki.cl/formulario/cotizacion/') // Sitio público alternativo
+    cy.visit('https://derco-blend.dercochile.soho.cl/') // Sitio QA 
   });
 
   it('Debe seleccionar modelo y versión Alto', () => {
