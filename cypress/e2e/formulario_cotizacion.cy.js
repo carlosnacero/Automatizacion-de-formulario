@@ -1,31 +1,65 @@
 import LoginPage from '../pages/LoginPage';
 
 describe('Formulario de Cotización - Derco Blend', () => {
-  it('Llena y envía el formulario correctamente', () => {
-    cy.visit('https://derco-blend.dercochile.soho.cl/');
+  beforeEach(() => {
+    cy.visit('https://www.suzuki.cl/formulario/cotizacion/') // Sitio público alternativo
+  });
 
-    // Espera que cargue el formulario o sección de interés
-    cy.contains('Cotiza', { timeout: 10000 }).should('be.visible');
+  it('Debe seleccionar modelo y versión Alto', () => {
+    cy.contains('Alto').click();
+    cy.contains('Siguiente').click();
+    cy.get('.error').should('not.exist'); // Verifica que no haya error
+  });
 
-    // Scroll o click si es necesario para mostrar el formulario
-    cy.get('button').contains('Cotiza').click();
+  it('Debe seleccionar ubicación válida', () => {
+    cy.contains('Alto').click();
+    cy.contains('Siguiente').click();
 
-    // Completar los campos del formulario (ajustar los selectores según el DOM real)
-    cy.get('input[name="nombre"]').type('Carlos Nacero');
-    cy.get('input[name="email"]').type('carlosnacero@soho.cl');
-    cy.get('input[name="telefono"]').type('987654321');
+    cy.get('select[name="region"]').select('RM Región Metropolitana');
+    cy.get('select[name="comuna"]').select('Santiago'); // Ajustar según opciones reales
+    cy.get('select[name="concesionario"]').select(/.+/); // Selecciona el primer valor disponible
+    
+    cy.contains('Siguiente').click();
+    cy.get('.error').should('not.exist'); // No errores
+  });
 
-    // Si hay selects o dropdowns
-    cy.get('select[name="modelo"]').select('Sail');
-    cy.get('select[name="ciudad"]').select('Santiago');
+  it('Debe permitir ingresar datos personales y enviar cotización', () => {
+    cy.contains('Alto').click();
+    cy.contains('Siguiente').click();
+    cy.get('select[name="region"]').select('RM Región Metropolitana');
+    cy.get('select[name="comuna"]').select('Santiago'); // Ajustar si necesario
+    cy.get('select[name="concesionario"]').select(/.+/);
+    cy.contains('Siguiente').click();
 
-    // Aceptar términos si es necesario
-    cy.get('input[type="checkbox"]').check();
+    // Datos personales
+    cy.get('input[name="firstName"]').type('Carlos Alberto'); // Nombre
+    cy.get('input[name="lastName"]').type('usuario@ejemplo.com');// Apellido
+    cy.get('input[name="email"]').type('usuario@ejemplo.com'); // Email
+    cy.get('input[name="telefono"]').type('912345678'); // Teléfono
+    cy.get('input[name="rut"]').type('26840984-k'); // RUT válido
+   
+  
+    // Preferencias
+    cy.get('input[name="testDrive"][value="Sí"]').check();
+    cy.get('input[name="financiamiento"][value="No"]').check();
+    cy.get('input[name="contacto"][value="Email"]').check();
 
-    // Enviar el formulario
-    cy.get('button').contains('Enviar').click();
+    cy.contains('Enviar cotización').click();
+    cy.contains('Gracias por cotizar').should('exist'); // Mensaje de éxito esperado
+  });
 
-    // Verificar mensaje de éxito o comportamiento esperado
-    cy.contains('Gracias por tu cotización').should('be.visible');
+  it('Debe mostrar errores si faltan datos', () => {
+    cy.contains('Alto').click();
+    cy.contains('Siguiente').click();
+    cy.get('select[name="region"]').select('RM Región Metropolitana');
+    cy.get('select[name="comuna"]').select('Santiago');
+    cy.get('select[name="concesionario"]').select(/.+/);
+    cy.contains('Siguiente').click();
+
+    // Sin ingresar datos
+    cy.contains('Enviar cotización').click();
+
+    // Validaciones HTML5
+    cy.get('input:invalid').should('have.length.at.least', 1);
   });
 });
