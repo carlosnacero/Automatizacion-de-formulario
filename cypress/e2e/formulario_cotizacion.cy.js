@@ -17,9 +17,9 @@ cy.contains('button', 'Entendido').click();
   it('Debe seleccionar ubicación válida', () => {
 
 
-    cy.get('select[name="region"]').select('RM Región Metropolitana');
-    cy.get('select[name="comuna"]').select('Santiago'); // Ajustar según opciones reales
-    cy.get('select[name="concesionario"]').select(/.+/); // Selecciona el primer valor disponible
+    cy.get('select[name="select-region"]').select('RM Región Metropolitana');
+    cy.get('select[name="selectComuna"]').select('Santiago'); // Ajustar según opciones reales
+    cy.get('select[name="selectSubsidiary"]').select(/.+/); // Selecciona el primer valor disponible
     
     cy.contains('Siguiente').click();
     cy.get('.error').should('not.exist'); // No errores
