@@ -5,6 +5,9 @@ describe('Formulario de Cotización - Derco Blend', () => {
     cy.visit('https://derco-blend.dercochile.soho.cl/') // Sitio QA 
   });
 
+  // Espera a que aparezca y haz clic en el botón "Entendido"
+cy.contains('button', 'Entendido').click();
+
   it('Debe seleccionar modelo y versión Alto', () => {
     cy.contains('Alto').click();
     cy.contains('Cotizar').click();
