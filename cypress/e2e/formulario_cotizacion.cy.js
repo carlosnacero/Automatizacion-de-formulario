@@ -7,13 +7,12 @@ describe('Formulario de Cotización - Derco Blend', () => {
 
   it('Debe seleccionar modelo y versión Alto', () => {
     cy.contains('Alto').click();
-    cy.contains('Siguiente').click();
+    cy.contains('Cotizar').click();
     cy.get('.error').should('not.exist'); // Verifica que no haya error
   });
 
   it('Debe seleccionar ubicación válida', () => {
-    cy.contains('Alto').click();
-    cy.contains('Siguiente').click();
+
 
     cy.get('select[name="region"]').select('RM Región Metropolitana');
     cy.get('select[name="comuna"]').select('Santiago'); // Ajustar según opciones reales
@@ -24,8 +23,7 @@ describe('Formulario de Cotización - Derco Blend', () => {
   });
 
   it('Debe permitir ingresar datos personales y enviar cotización', () => {
-    cy.contains('Alto').click();
-    cy.contains('Siguiente').click();
+
     cy.get('select[name="region"]').select('RM Región Metropolitana');
     cy.get('select[name="comuna"]').select('Santiago'); // Ajustar si necesario
     cy.get('select[name="concesionario"]').select(/.+/);
@@ -40,9 +38,9 @@ describe('Formulario de Cotización - Derco Blend', () => {
    
   
     // Preferencias
-    cy.get('input[name="testDrive"][value="Sí"]').check();
-    cy.get('input[name="financiamiento"][value="No"]').check();
-    cy.get('input[name="contacto"][value="Email"]').check();
+    cy.get('input[name="checkConditions"]').check();
+    cy.get('input[name="checkContactDerco"]').check();
+  
 
     cy.contains('Enviar cotización').click();
     cy.contains('Gracias por cotizar').should('exist'); // Mensaje de éxito esperado
